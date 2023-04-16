@@ -24,8 +24,7 @@ export function Wheel() {
   const changeToActive = (index) => {
     for (let i = 0; i < cogs.length; i++){
       if(i === index){
-            cogs[index].classList.add("active");
-            cogs[index].innerHTML = "B";
+          cogs[index].classList.add("active");
       } else {
         cogs[i].classList.remove("active");
       }

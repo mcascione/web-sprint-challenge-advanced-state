@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {connect, useDispatch, useSelector} from 'react-redux'
 import * as actionCreators from '../state/action-creators'
-import { fetchQuiz, selectAnswer, postAnswer, setMessage} from '../state/action-creators';
+
 
 export function Quiz() {
   const dispatch = useDispatch();
@@ -9,29 +9,30 @@ export function Quiz() {
   const selectedAnswer = useSelector(state => state.selectedAnswer);
   const infoMessage = useSelector((state) => state.infoMessage);
 
+
   useEffect(() => {
-    dispatch(fetchQuiz());
+    dispatch(actionCreators.fetchQuiz());
   }, [dispatch]);
 
   useEffect(() => {
     if (infoMessage && selectedAnswer) {
-      dispatch(setMessage(null));
+      dispatch(actionCreators.setMessage(null));
     }
   }, [infoMessage, selectedAnswer, dispatch]);
 
   const handleSelect = (answer_id) => {
-    dispatch(selectAnswer(answer_id));
+    dispatch(actionCreators.selectAnswer(answer_id));
   }
 
   const handleSubmit = () => {
-    dispatch(postAnswer(quizState.quiz_id, selectedAnswer));
+    dispatch(actionCreators.postAnswer(quizState.quiz_id, selectedAnswer));
   }
 
   return (
     <div id="wrapper">
       {
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-       quizState ?   (
+        quizState ? (
           <>
             <h2>{quizState.question}</h2>
             <div id="quizAnswers">
@@ -49,13 +50,31 @@ export function Quiz() {
               </div>
             </div>
 
-            <button id="submitAnswerBtn" disabled={!selectedAnswer}onClick={handleSubmit}>Submit answer</button>
+            <button 
+              id="submitAnswerBtn" 
+              disabled={!selectedAnswer}
+              onClick={handleSubmit}
+            >
+              Submit answer
+            </button>
           </>
         ) : 'Loading next quiz...'
       }
-
     </div>
-  )
+  );
 }
 
-export default connect(st => st, actionCreators)(Quiz)
+const mapStateToProps = state => ({
+  quizState: state.quiz,
+  selectedAnswer: state.selectedAnswer,
+  infoMessage: state.infoMessage,
+});
+
+const mapDispatchToProps = {
+  fetchQuiz: actionCreators.fetchQuiz,
+  selectAnswer:actionCreators.selectAnswer,
+  postAnswer:actionCreators.postAnswer,
+  setMessage:actionCreators.setMessage
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz)

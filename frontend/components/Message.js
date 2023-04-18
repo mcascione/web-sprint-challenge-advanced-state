@@ -4,7 +4,7 @@ import * as actionCreators from '../state/action-creators'
 
 export function Message() {
   const messageState = useSelector(state => state.infoMessage)
-
+  
   if (!messageState) {
     return null;
   }

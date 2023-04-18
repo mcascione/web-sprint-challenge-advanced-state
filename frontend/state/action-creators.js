@@ -20,9 +20,13 @@ export function setQuiz(data) {
   return { type: "SET_QUIZ_INTO_STATE", payload: data};
 }
 
-export function inputChange() {}
+export function inputChange(value, id) {
+  return { type:"INPUT_CHANGE", payload:{value, id}};
+}
 
-export function resetForm() {}
+export function resetForm() {
+  return { type:"RESET_FORM"}
+}
 
 // ❗ Async action creators
 export function fetchQuiz() {
@@ -48,8 +52,8 @@ export function postAnswer(quiz_id, answer_id) {
   return function (dispatch) {
    
    const answerPayload = {
-    quiz_id: quiz_id,
-    answer_id: answer_id,
+    quiz_id,
+    answer_id
   };
     axios
     .post("http://localhost:9000/api/quiz/answer", answerPayload)
@@ -70,8 +74,23 @@ export function postAnswer(quiz_id, answer_id) {
     // - Dispatch the fetching of the next quiz
   };
 }
-export function postQuiz() {
+export function postQuiz(question_text, true_answer_text, false_answer_text) {
   return function (dispatch) {
+    const quizPayload = {
+      question_text, 
+      true_answer_text,
+      false_answer_text
+    };
+    axios
+    .post("http://localhost:9000/api/quiz/new", quizPayload)
+    .then(res => {
+      dispatch(setMessage(`Congrats: "${res.data.question}" is a great question!`))
+      dispatch(resetForm())
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch(setMessage("Error posting quiz"))
+    })
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form

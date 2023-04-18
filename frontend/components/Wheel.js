@@ -8,7 +8,6 @@ export function Wheel() {
   const wheelState = useSelector(state => state.wheel);
   const cogs = document.getElementsByClassName("cog");
 
-
   const handleCounterClockwise = () => {
     dispatch(moveCounterClockwise());
     changeToActive();
@@ -18,8 +17,6 @@ export function Wheel() {
     dispatch(moveClockwise());
     changeToActive();
   };
-  
- 
 
   const changeToActive = (index) => {
     for (let i = 0; i < cogs.length; i++){
@@ -30,7 +27,6 @@ export function Wheel() {
       }
     }
   }
-
 
   return (
     <div id="wrapper">

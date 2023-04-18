@@ -38,13 +38,13 @@ export function Quiz() {
               <div className={`answer ${selectedAnswer === (quizState.answers[0].answer_id) ? 'selected' : ""}`}>
                 {quizState.answers[0].text}
                 <button onClick={() => handleSelect(quizState.answers[0].answer_id)}>
-                {selectedAnswer === (quizState.answers[0].answer_id)?'Selected':'Select'}
+                {selectedAnswer === (quizState.answers[0].answer_id)?'SELECTED':'Select'}
                 </button>
               </div>
               <div className={`answer ${selectedAnswer === (quizState.answers[1].answer_id) ? 'selected' : ""}`}>
               {quizState.answers[1].text}
                 <button onClick={() => handleSelect(quizState.answers[1].answer_id)}>
-                {selectedAnswer === (quizState.answers[1].answer_id)?'Selected':'Select'}
+                {selectedAnswer === (quizState.answers[1].answer_id)?'SELECTED':'Select'}
                 </button>
               </div>
             </div>

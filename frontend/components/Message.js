@@ -1,5 +1,15 @@
 import React from 'react'
+import {connect, useSelector} from 'react-redux'
+import * as actionCreators from '../state/action-creators'
 
-export default function Message(props) {
-  return <div id="message">Nice job!</div>
+export function Message() {
+  const messageState = useSelector(state => state.infoMessage)
+
+  if (!messageState) {
+    return null;
+  }
+
+  return <div id="message">{messageState}</div>
 }
+
+export default connect(st => st, actionCreators)(Message)

@@ -49,7 +49,7 @@ export function Quiz() {
               </div>
             </div>
 
-            <button id="submitAnswerBtn" onClick={handleSubmit}>Submit answer</button>
+            <button id="submitAnswerBtn" disabled={!selectedAnswer}onClick={handleSubmit}>Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }

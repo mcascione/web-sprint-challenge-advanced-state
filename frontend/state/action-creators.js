@@ -32,7 +32,6 @@ export function resetForm() {
 export function fetchQuiz() {
   return function (dispatch) {
     dispatch(setQuiz(null));
-    
     axios
       .get("http://localhost:9000/api/quiz/next")
       .then((res) => {
@@ -50,14 +49,12 @@ export function fetchQuiz() {
 
 export function postAnswer(quiz_id, answer_id) {
   return function (dispatch) {
-   
    const answerPayload = {
     quiz_id,
     answer_id
   };
     axios
     .post("http://localhost:9000/api/quiz/answer", answerPayload)
-
     .then((res) => {
       dispatch(selectAnswer(null));
       dispatch(setMessage(res.data.message))

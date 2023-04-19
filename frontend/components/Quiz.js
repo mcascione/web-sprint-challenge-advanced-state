@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {connect, useDispatch, useSelector} from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 
@@ -6,26 +6,18 @@ import * as actionCreators from '../state/action-creators'
 export function Quiz() {
   const dispatch = useDispatch();
   const quizState = useSelector(state => state.quiz);
-  const selectedAnswer = useSelector(state => state.selectedAnswer);
-  const infoMessage = useSelector((state) => state.infoMessage);
-
-
-  useEffect(() => {
-    dispatch(actionCreators.fetchQuiz());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (infoMessage && selectedAnswer) {
-      dispatch(actionCreators.setMessage(null));
-    }
-  }, [infoMessage, selectedAnswer, dispatch]);
+  const selectedAnswerState = useSelector(state => state.selectedAnswer);
 
   const handleSelect = (answer_id) => {
     dispatch(actionCreators.selectAnswer(answer_id));
   }
 
   const handleSubmit = () => {
-    dispatch(actionCreators.postAnswer(quizState.quiz_id, selectedAnswer));
+    dispatch(actionCreators.postAnswer(quizState.quiz_id, selectedAnswerState));
+  }
+
+  if (!quizState) {
+    dispatch(actionCreators.fetchQuiz())
   }
 
   return (
@@ -36,23 +28,23 @@ export function Quiz() {
           <>
             <h2>{quizState.question}</h2>
             <div id="quizAnswers">
-              <div className={`answer ${selectedAnswer === (quizState.answers[0].answer_id) ? 'selected' : ""}`}>
+              <div className={`answer ${selectedAnswerState === (quizState.answers[0].answer_id) ? 'selected' : ""}`}>
                 {quizState.answers[0].text}
                 <button onClick={() => handleSelect(quizState.answers[0].answer_id)}>
-                {selectedAnswer === (quizState.answers[0].answer_id)?'SELECTED':'Select'}
+                {selectedAnswerState === (quizState.answers[0].answer_id)?'SELECTED':'Select'}
                 </button>
               </div>
-              <div className={`answer ${selectedAnswer === (quizState.answers[1].answer_id) ? 'selected' : ""}`}>
+              <div className={`answer ${selectedAnswerState === (quizState.answers[1].answer_id) ? 'selected' : ""}`}>
               {quizState.answers[1].text}
                 <button onClick={() => handleSelect(quizState.answers[1].answer_id)}>
-                {selectedAnswer === (quizState.answers[1].answer_id)?'SELECTED':'Select'}
+                {selectedAnswerState === (quizState.answers[1].answer_id)?'SELECTED':'Select'}
                 </button>
               </div>
             </div>
 
             <button 
               id="submitAnswerBtn" 
-              disabled={!selectedAnswer}
+              disabled={!selectedAnswerState}
               onClick={handleSubmit}
             >
               Submit answer
@@ -64,17 +56,4 @@ export function Quiz() {
   );
 }
 
-const mapStateToProps = state => ({
-  quizState: state.quiz,
-  selectedAnswer: state.selectedAnswer,
-  infoMessage: state.infoMessage,
-});
-
-const mapDispatchToProps = {
-  fetchQuiz: actionCreators.fetchQuiz,
-  selectAnswer:actionCreators.selectAnswer,
-  postAnswer:actionCreators.postAnswer,
-  setMessage:actionCreators.setMessage
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Quiz)
+export default connect(st => st, actionCreators)(Quiz)

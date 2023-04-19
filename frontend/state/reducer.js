@@ -46,7 +46,6 @@ const initialSelectedAnswerState = null;
 function selectedAnswer(state = initialSelectedAnswerState, action) {
 
   switch (action.type) {
-    
     case SET_SELECTED_ANSWER:
       return action.payload;
     default:
@@ -70,9 +69,11 @@ const initialFormState = {
   newFalseAnswer: "",
 };
 function form(state = initialFormState, action) {
+  let value, id;
   switch (action.type) {
     case INPUT_CHANGE: 
-    const { value, id } = action.payload
+    value = action.payload.value;
+    id = action.payload.id;
     if (id === "newQuestion"){
       return {...state, newQuestion: value}
     } else if (id === "newTrueAnswer"){
